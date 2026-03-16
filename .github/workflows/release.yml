@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - run: dotnet publish -c Release
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: bin/Release/net10.0-windows10.0.22621.0/win-x64/publish/sswitch.exe
+          generate_release_notes: true
